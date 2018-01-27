@@ -5,7 +5,7 @@ using Tiled2Unity;
 using System.Linq;
 using System.Reflection;
 
-public class Create_NPC : MonoBehaviour
+public class CreateNPC : MonoBehaviour
 {
     public int HowManyNPC = 1;
     public Animator otherAnimator;
@@ -18,8 +18,6 @@ public class Create_NPC : MonoBehaviour
 
         RectangleObject[] boxColliders = Map[0].GetComponentsInChildren<RectangleObject>();
         List<Vector2> tileCollision = new List<Vector2>();
-
-        List<Animator> npcS = new List<Animator>();
         
         foreach (TmxObject tmo in boxColliders)
         {
@@ -51,8 +49,7 @@ public class Create_NPC : MonoBehaviour
 
         GameObject npcGroup = new GameObject();
 
-        // Add NPC
-        
+        // Add NPC        
         for (int n = 0; n < HowManyNPC; n++)
         {
             var randomIndex = Random.Range(0, tileFree.Count);
@@ -72,7 +69,6 @@ public class Create_NPC : MonoBehaviour
         }
 
         npcGroup.transform.parent = tileMap.transform;
-        //Instantiate(npcGroup, tileMap.transform);
     }
 
     // Update is called once per frame
