@@ -10,9 +10,9 @@ public class NPC_Manager : MonoBehaviour
 
     void Start ()
     {
-        InitColorSwapTex();
-        SwapColor(SwapIndex.Body, Color.blue);
-        mColorSwapTex.Apply();
+        //InitColorSwapTex();
+        //SwapColor(SwapIndex.Body, Color.blue);
+        //mColorSwapTex.Apply();
 
     }
 	
