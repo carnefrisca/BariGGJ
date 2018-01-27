@@ -69,7 +69,6 @@ public class CreateNPC : MonoBehaviour
         }
 
         npcGroup.transform.parent = tileMap.transform;
-        //Instantiate(npcGroup, tileMap.transform);
     }
 
     // Update is called once per frame

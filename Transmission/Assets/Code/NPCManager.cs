@@ -11,50 +11,92 @@ public class NPCManager : MonoBehaviour
 
     private int _healtLevel = 100;
 
-    public Transform target;
-    public float speed = 10f;
-    public string moveTo;
-
     MovementState movement;
+
+    private Vector3 endpoint;
+    private Vector3 vDirection;
+    public float speed;
+
+
+    private float timer = 0.0f;
+    public float waitingTime = 2.0f;
+    public float Range;
 
     public int HealtLevel
     {
         get { return _healtLevel; }
         set { _healtLevel = value; }
     }
-
-
-    void Start ()
-    {
-        //InitColorSwapTex();
-        //SwapColor(SwapIndex.Body, Color.red);
-        //mColorSwapTex.Apply();
-    }
 	
 	void Update ()
     {
-        float step = speed * Time.deltaTime;
-        int x_rand = Random.Range(0, 1088);
-        int y_rand = Random.Range(-736, 0);
+        print(movement + " " + vDirection);
+        print("Current dir " + transform.TransformDirection(vDirection) * speed * Time.deltaTime);
 
+        gameObject.transform.position += transform.TransformDirection(vDirection) * speed * Time.deltaTime;
 
-        if (gameObject.transform.position.x < x_rand)
-            movement = MovementState.walkLeft;
-        if (gameObject.transform.position.x > x_rand)
-            movement = MovementState.walkRight;
+        print("vector Vs vector " + Vector3.Distance(gameObject.transform.position, endpoint));
+        if ((gameObject.transform.position - endpoint).magnitude < Range)
+        {
+            print("IN TIMER " + timer);
+            timer += Time.deltaTime;
+            if (timer > waitingTime)
+            {
+                print("RESET TIMER");
+                timer = 0f;
+                Reset();
+            }
+        }
+    }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Reset();
+    }
 
+    void Reset()
+    {
+        print("RESET");
+        endpoint = gameObject.transform.position; //new Vector3(Random.Range(gameObject.transform.position.x, gameObject.transform.position.x + Range), 1, 0);
+        gameObject.transform.LookAt(endpoint);
+        RandomPosition();
+        RandomDirection();
+        print("RESET " + endpoint + " " + vDirection);
+    }
 
-        //if (gameObject.transform.position.x > 544)
-        //    movement = MovementState.walkRight;
-        //if (gameObject.transform.position.x < 544)
-        //    movement = MovementState.walkLeft;
+    void RandomPosition()
+    {
+        float x = Random.Range(42f, 1045f);
+        float y = Random.Range(-672f, 64f);
+        endpoint = new Vector2(x, y);
+    }
 
-        moveTo = movement.ToString();
+    void RandomDirection()
+    {
+        int direction = Random.Range(0,5);
+        movement = (MovementState)direction;
 
-        transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(x_rand, y_rand, 0), step);
-
-
+        switch (movement)
+        {
+            case MovementState.idleFront:
+                vDirection = Vector3.zero;
+                break;
+            case MovementState.idleBack:
+                vDirection = Vector3.zero;
+                break;
+            case MovementState.walkLeft:
+                vDirection = Vector3.left;
+                break;
+            case MovementState.walkRight:
+                vDirection = Vector3.right;
+                break;
+            case MovementState.walkTop:
+                vDirection = Vector3.up;
+                break;
+            case MovementState.walkBottom:
+                vDirection = Vector3.down;
+                break;
+        }
     }
 
     public void InitColorSwapTex()
