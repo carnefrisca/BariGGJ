@@ -3,13 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-<<<<<<< HEAD
-  - Map
-=======
-  - Enemy
-  - BombaCurativa
->>>>>>> ddaa989badaea9c332344943c7d665ac65d4fe00
+  tags: []
   layers:
   - Default
   - TransparentFX
