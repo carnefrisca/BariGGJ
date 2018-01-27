@@ -1,9 +1,5 @@
-﻿Shader "Hidden/NewImageEffectShader"
+﻿Shader "Sprites/ChangeColor"
 {
-	//Properties
-	//{
-	//	_MainTex ("Texture", 2D) = "white" {}
-	//}
 	Properties
 	{
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
@@ -11,10 +7,15 @@
 		_Color("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap("Pixel snap", Float) = 0
 	}
+
 	SubShader
 	{
 		// No culling or depth
-		Cull Off ZWrite Off ZTest Always
+			
+		Cull Off
+		ZWrite Off 
+		ZTest Always
+		Blend One OneMinusSrcAlpha
 
 		Pass
 		{
@@ -44,6 +45,7 @@
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = v.uv;
 				o.color = v.color;
+
 				return o;
 			}
 			
@@ -53,7 +55,7 @@
 
 			sampler2D _SwapTex;
 
-			fixed4 SampleSpriteTexture(float2 uv)
+			fixed4 SampleSpriteTx(float2 uv)
 			{
 				fixed4 color = tex2D(_MainTex, uv);
 				if (_AlphaSplitEnabled)
@@ -62,29 +64,16 @@
 				return color;
 			}
 
-			//fixed4 frag(v2f i) : SV_Target
-			//{
-			//	fixed4 color = tex2D(_MainTex, i.uv);
-			//	fixed4 c = SampleSpriteTexture(i.uv) * color;
-			//	c.rgb *= c.a;
-			//	return c;
-			//}
-			fixed4 frag(v2f IN) : SV_Target
+			fixed4 frag(v2f i) : SV_Target
 			{
-				fixed4 c = SampleSpriteTexture(IN.uv);
+				fixed4 c = SampleSpriteTx(i.uv);
 				fixed4 swapCol = tex2D(_SwapTex, float2(c.r, 0));
-				fixed4 final = lerp(c, swapCol, swapCol.a) * IN.color;
+				fixed4 final = lerp(c, swapCol, swapCol.a) * i.color;
 				final.a = c.a;
 				final.rgb *= c.a;
 				return final;
 			}
-			//fixed4 frag (v2f i) : SV_Target
-			//{
-			//	fixed4 col = tex2D(_MainTex, i.uv);
-			//	// just invert the colors
-			//	col.rgb = 1 - col.rgb;
-			//	return col;
-			//}
+
 			ENDCG
 		}
 	}
