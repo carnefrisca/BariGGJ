@@ -17,47 +17,105 @@ public class PlayerController : MonoBehaviour {
 	public bool healingBomb = false;
 	public bool holdingBomb = false;
 	public GameObject destroyGameObject;
+	public float horizontalDirection;
+	public float verticalDirection;
+
+	public bool faceFront;
+	public bool faceRight;
+	public bool faceRear;
+	public bool faceLeft;
+
+
+
 
 	private Rigidbody2D rb2d;       
 	SpriteRenderer m_SpriteRenderer;
-
+	private Animator anim;
 
 
 	void Start()
 	{
-
+		anim = GetComponent<Animator> ();
 		rb2d = GetComponent<Rigidbody2D> ();
 	}
 
 	void Update ()
 	{
-		if ((Input.GetButtonDown ("Interaction")) & (healingBomb)) 
+
+		if ((Input.GetButtonDown ("HoldBomb")) & (healingBomb)) 
 		{
 
-			DestroyBombOnStage();
+			DestroyBombOnStage ();
 			//playanimation
 		}
-		if ((Input.GetButtonDown ("Interaction")) & (holdingBomb)) 
+		if ((Input.GetButtonDown ("DropBomb")) & (holdingBomb)) {
 			StartCoroutine ("RevertTransmission");
-		
+			Debug.Log ("DropBomb");
+			anim.SetBool ("holdingBomb", false);
+		}
+
 			
 	}
 
 	void FixedUpdate()
 	{
-
+		anim.SetFloat ("hDirection", horizontalDirection);
+		anim.SetFloat ("vDirection", verticalDirection);
 		float moveHorizontal = Input.GetAxis ("Horizontal");
-
-
 		float moveVertical = Input.GetAxis ("Vertical");
-
-		//Use the two store floats to create a new Vector2 variable movement.
-		 Vector2 movement = new Vector2 (moveHorizontal, moveVertical);
-
+		horizontalDirection = Input.GetAxis ("Horizontal");
+		verticalDirection = Input.GetAxis ("Vertical");
+		Vector2 movement = new Vector2 (moveHorizontal, moveVertical);
 		rb2d.AddForce (movement * speed);
+
+		if (moveVertical > 0)
+		{
+			faceFront = false;
+			faceRear = true;
+			faceLeft = false;
+			faceRight = false;
+			anim.SetBool ("faceRear", true);
+			anim.SetBool ("faceFront", false);
+			anim.SetBool ("faceLeft", false);
+			anim.SetBool ("faceRight", false);
+		}
+		
+		if (moveVertical < 0) 
+		{
+			faceFront = true;
+			faceRear = false;
+			faceLeft = false;
+			faceRight = false;
+			anim.SetBool ("faceRear", false);
+			anim.SetBool ("faceFront", true);
+			anim.SetBool ("faceLeft", false);
+			anim.SetBool ("faceRight", false);
+		}
+		if (moveHorizontal > 0) 
+		{
+			faceFront = false;
+			faceRear = false;
+			faceLeft = false;
+			faceRight = true;
+			anim.SetBool ("faceRear", false);
+			anim.SetBool ("faceFront", false);
+			anim.SetBool ("faceLeft", false);
+			anim.SetBool ("faceRight", true);
+		}
+		if (moveHorizontal < 0)
+		{
+			faceFront = false;
+			faceRear = false;
+			faceLeft = true;
+			faceRight = false;
+			anim.SetBool ("faceRear", false);
+			anim.SetBool ("faceFront", false);
+			anim.SetBool ("faceLeft", true);
+			anim.SetBool ("faceRight", false);
+		}
 	}
 
-	void OnCollisionEnter2D(Collision2D coll) 
+	void OnTriggerEnter2D(Collider2D coll) 
 	{
 		if (coll.gameObject.tag == "Enemy")
 		{
@@ -71,6 +129,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.Log ("BombaCurativa Collision");
 			healingBomb = true;
 			destroyGameObject = coll.gameObject;
+
 		} 
 
 	}
@@ -79,9 +138,10 @@ public class PlayerController : MonoBehaviour {
 	{
 		holdingBomb = true;
 		Destroy(destroyGameObject);
+		anim.SetBool ("holdingBomb", true);
 	}
 
-	void OnCollisionExit2D (Collision2D coll)
+	void OnTriggerExit2D (Collider2D coll)
 	{
 		if (coll.gameObject.tag == "BombaCurativa") 
 		{
