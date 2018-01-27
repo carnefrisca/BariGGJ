@@ -277,7 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd7b902c6dded647a33623fcdc3fe81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HowManyNPC: 10
+  HowManyNPC: 50
   otherAnimator: {fileID: 2026905715}
 --- !u!1001 &693405674
 Prefab:
