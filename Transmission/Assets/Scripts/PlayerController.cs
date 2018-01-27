@@ -25,6 +25,10 @@ public class PlayerController : MonoBehaviour {
 	public bool faceRear;
 	public bool faceLeft;
 	public GameObject bombBlastPS;
+	private AudioSource myAudio;
+	public AudioClip blastBomb;
+	public AudioClip pickBomb;
+	public AudioClip startInfection;
 
 
 
@@ -36,7 +40,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start()
 	{
-
+		myAudio = GetComponent<AudioSource> ();
 		anim = GetComponent<Animator> ();
 		rb2d = GetComponent<Rigidbody2D> ();
 	}
@@ -46,11 +50,13 @@ public class PlayerController : MonoBehaviour {
 
 		if ((Input.GetButtonDown ("HoldBomb")) & (healingBomb)) 
 		{
-
+			myAudio.PlayOneShot (pickBomb);
 			DestroyBombOnStage ();
 			//playanimation
 		}
-		if ((Input.GetButtonDown ("DropBomb")) & (holdingBomb)) {
+		if ((Input.GetButtonDown ("DropBomb")) & (holdingBomb)) 
+		{
+			myAudio.PlayOneShot (blastBomb);
 			StartCoroutine ("RevertTransmission");
 			Debug.Log ("DropBomb");
 			anim.SetBool ("holdingBomb", false);
@@ -158,6 +164,7 @@ public class PlayerController : MonoBehaviour {
 	public IEnumerator ChangeStatus()
 
 	{
+		myAudio.PlayOneShot (startInfection);
 		yield return new WaitForSeconds(transmissionTime);       
 		Debug.Log("Start Virus Transmission");  
 		m_SpriteRenderer = GetComponent<SpriteRenderer>();
