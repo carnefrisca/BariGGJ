@@ -288,6 +288,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 300
+  transmissionTime: 0
+  neutroStatusColor: {r: 0, g: 0, b: 0, a: 0}
+  firstStatusColor: {r: 0, g: 0, b: 0, a: 0}
+  secondStatusColor: {r: 0, g: 0, b: 0, a: 0}
+  thirdStatusColor: {r: 0, g: 0, b: 0, a: 0}
+  zombieStatus: {r: 0, g: 0, b: 0, a: 0}
+  infected: 0
+  smoothTime: 0.3
+  healingBomb: 0
+  holdingBomb: 0
+  destroyGameObject: {fileID: 0}
 --- !u!212 &1728092331
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -411,7 +422,7 @@ Animator:
   m_GameObject: {fileID: 2026905714}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 756385f40d7e1bc4bbc216fdb246603b, type: 2}
+  m_Controller: {fileID: 9100000, guid: dd616b3441bf91441ac6e5235fb7ca95, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -471,7 +482,7 @@ Transform:
   m_GameObject: {fileID: 2026905714}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -47.807938, y: -316.4354, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
