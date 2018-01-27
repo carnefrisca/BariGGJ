@@ -8,7 +8,18 @@ using System.Reflection;
 public class Create_NPC : MonoBehaviour
 {
     public int PercentageNPC = 1;
-    
+    public Texture2D tex;
+    private Sprite mySprite;
+    private SpriteRenderer sr;
+
+    void Awake()
+    {
+        sr = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
+        sr.color = new Color(0.9f, 0.9f, 0.9f, 1.0f);
+
+        transform.position = new Vector3(1.5f, 1.5f, 0.0f);
+    }
+
     // Use this for initialization
     void Start ()
     {
@@ -45,9 +56,15 @@ public class Create_NPC : MonoBehaviour
             int x = Random.Range(1, tileWidth - 1);
             int y = Random.Range(1, tileHeight - 1);
 
-            //Instantiate()
+            //mySprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+            GameObject obj = new GameObject("npc");
+            sr = obj.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         }
-	}
+
+        sr.sprite = mySprite;
+
+
+    }
 
     // Update is called once per frame
     void Update ()

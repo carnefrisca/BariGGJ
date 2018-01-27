@@ -26,8 +26,6 @@ public class NPC_Manager : MonoBehaviour
         Texture2D colorSwapTex = new Texture2D(32, 64, TextureFormat.RGBA32, false, false);
         colorSwapTex.filterMode = FilterMode.Point;
 
-       
-
         for (int i = 0; i < colorSwapTex.width; ++i)
             colorSwapTex.SetPixel(i, 0, new Color(0.0f, 0.0f, 0.0f, 0.0f));
 
@@ -46,12 +44,7 @@ public class NPC_Manager : MonoBehaviour
 
     public void SwapColor(SwapIndex index, Color color)
     {
-        //mSpriteColors[(int)index] = color;
-        for (int i=0; i<mSpriteColors.Length; i++)
-        {
-            mSpriteColors[i] = color;
-        }
-
+        mSpriteColors[(int)index] = color;
         mColorSwapTex.SetPixel((int)index, 0, color);
     }
 }

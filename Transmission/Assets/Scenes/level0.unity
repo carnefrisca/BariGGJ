@@ -156,6 +156,10 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: -10
       objectReference: {fileID: 0}
+    - target: {fileID: 1457543912103334, guid: 366de95be84451745be15648cafa0833, type: 2}
+      propertyPath: m_TagString
+      value: Map
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 366de95be84451745be15648cafa0833, type: 2}
   m_IsPrefabParent: 0
@@ -176,6 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PercentageNPC: 1
+  tex: {fileID: 2800000, guid: 6a256071393399f48b25025c40ab61c5, type: 3}
 --- !u!1001 &693405674
 Prefab:
   m_ObjectHideFlags: 0
