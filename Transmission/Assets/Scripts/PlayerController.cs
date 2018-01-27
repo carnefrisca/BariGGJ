@@ -5,9 +5,22 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 	public float speed;
-
+	public int transmissionTime;
+	public Color neutroStatusColor;
+	public Color firstStatusColor;
+	public Color secondStatusColor;
+	public Color thirdStatusColor;
+	public Color zombieStatus;
+	public bool infected;
+	public float smoothTime = .3F;
+	private float velocity = 1F;
+	public bool healingBomb = false;
+	public bool holdingBomb = false;
+	public GameObject destroyGameObject;
 
 	private Rigidbody2D rb2d;       
+	SpriteRenderer m_SpriteRenderer;
+
 
 
 	void Start()
@@ -16,6 +29,19 @@ public class PlayerController : MonoBehaviour {
 		rb2d = GetComponent<Rigidbody2D> ();
 	}
 
+	void Update ()
+	{
+		if ((Input.GetButtonDown ("Interaction")) & (healingBomb)) 
+		{
+
+			DestroyBombOnStage();
+			//playanimation
+		}
+		if ((Input.GetButtonDown ("Interaction")) & (holdingBomb)) 
+			StartCoroutine ("RevertTransmission");
+		
+			
+	}
 
 	void FixedUpdate()
 	{
@@ -26,8 +52,71 @@ public class PlayerController : MonoBehaviour {
 		float moveVertical = Input.GetAxis ("Vertical");
 
 		//Use the two store floats to create a new Vector2 variable movement.
-		Vector2 movement = new Vector2 (moveHorizontal, moveVertical);
+		 Vector2 movement = new Vector2 (moveHorizontal, moveVertical);
 
 		rb2d.AddForce (movement * speed);
 	}
+
+	void OnCollisionEnter2D(Collision2D coll) 
+	{
+		if (coll.gameObject.tag == "Enemy")
+		{
+			Debug.Log ("Enemy");
+			StartCoroutine ("ChangeStatus");
+			infected = true;
+
+		}
+		if (coll.gameObject.tag == "BombaCurativa") 
+		{
+			Debug.Log ("BombaCurativa Collision");
+			healingBomb = true;
+			destroyGameObject = coll.gameObject;
+		} 
+
+	}
+	 
+	void DestroyBombOnStage ()
+	{
+		holdingBomb = true;
+		Destroy(destroyGameObject);
+	}
+
+	void OnCollisionExit2D (Collision2D coll)
+	{
+		if (coll.gameObject.tag == "BombaCurativa") 
+		{
+			healingBomb = false;
+		} 
+	}
+
+
+
+	public IEnumerator ChangeStatus()
+
+	{
+		
+		yield return new WaitForSeconds(transmissionTime);       
+		Debug.Log("Start Virus Transmission");  
+		m_SpriteRenderer = GetComponent<SpriteRenderer>();
+		//m_SpriteRenderer.color = firstStatusColor;
+		m_SpriteRenderer.color = new Color(240.0f, Mathf.SmoothDamp(0.0f, 200.9f, ref velocity, smoothTime),0.0f);
+
+	}
+	public IEnumerator RevertTransmission()
+
+	{
+
+		yield return new WaitForSeconds(transmissionTime);       
+		Debug.Log("Revert Virus Transmission");  
+		m_SpriteRenderer = GetComponent<SpriteRenderer>();
+		//m_SpriteRenderer.color = firstStatusColor;
+		m_SpriteRenderer.color = neutroStatusColor;
+		infected = false;
+		holdingBomb = false;
+	}
+
+
+
+
+
 }
