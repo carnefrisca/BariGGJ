@@ -8,6 +8,13 @@ public class NPC_Manager : MonoBehaviour
     Texture2D mColorSwapTex;
     Color[] mSpriteColors;
 
+    private int _healtLevel = 100;
+    public int HealtLevel
+    {
+        get { return _healtLevel; }
+    }
+
+
     void Start ()
     {
         //InitColorSwapTex();
