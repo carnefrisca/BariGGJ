@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour {
 	public float smoothTime = .3F;
 	private float velocity = 1F;
 	public bool healingBomb = false;
+	public bool holdingBomb = false;
+	public GameObject destroyGameObject;
 
 	private Rigidbody2D rb2d;       
 	SpriteRenderer m_SpriteRenderer;
@@ -29,9 +31,15 @@ public class PlayerController : MonoBehaviour {
 
 	void Update ()
 	{
-		if ((Input.GetButtonDown ("Interaction")) & (healingBomb))
+		if ((Input.GetButtonDown ("Interaction")) & (healingBomb)) 
+		{
 
+			DestroyBombOnStage();
+			//playanimation
+		}
+		if ((Input.GetButtonDown ("Interaction")) & (holdingBomb)) 
 			StartCoroutine ("RevertTransmission");
+		
 			
 	}
 
@@ -62,10 +70,17 @@ public class PlayerController : MonoBehaviour {
 		{
 			Debug.Log ("BombaCurativa Collision");
 			healingBomb = true;
+			destroyGameObject = coll.gameObject;
 		} 
 
 	}
 	 
+	void DestroyBombOnStage ()
+	{
+		holdingBomb = true;
+		Destroy(destroyGameObject);
+	}
+
 	void OnCollisionExit2D (Collision2D coll)
 	{
 		if (coll.gameObject.tag == "BombaCurativa") 
@@ -97,6 +112,7 @@ public class PlayerController : MonoBehaviour {
 		//m_SpriteRenderer.color = firstStatusColor;
 		m_SpriteRenderer.color = neutroStatusColor;
 		infected = false;
+		holdingBomb = false;
 	}
 
 
