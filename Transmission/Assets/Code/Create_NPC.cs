@@ -7,33 +7,20 @@ using System.Reflection;
 
 public class Create_NPC : MonoBehaviour
 {
-    public int PercentageNPC = 1;
-    public Texture2D tex;
-    private Sprite mySprite;
-    private SpriteRenderer sr;
-
-    void Awake()
-    {
-        sr = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
-        sr.color = new Color(0.9f, 0.9f, 0.9f, 1.0f);
-
-        transform.position = new Vector3(1.5f, 1.5f, 0.0f);
-    }
+    public int HowManyNPC = 1;
+    public Animator otherAnimator;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         TiledMap tileMap = GetComponent<TiledMap>();
         GameObject[] Map = GameObject.FindGameObjectsWithTag("Map");
 
-        int tileWidth = tileMap.NumTilesWide;
-        int tileHeight = tileMap.NumTilesHigh;
-
         RectangleObject[] boxColliders = Map[0].GetComponentsInChildren<RectangleObject>();
-        //Vector2[] tileCollision = new Vector2[tileWidth*tileHeight];
         List<Vector2> tileCollision = new List<Vector2>();
 
-
+        List<Animator> npcS = new List<Animator>();
+        
         foreach (TmxObject tmo in boxColliders)
         {
             int x_end = (int)(tmo.TmxPosition.x + tmo.TmxSize.x) / 32;
@@ -49,21 +36,43 @@ public class Create_NPC : MonoBehaviour
             }
         }
 
-
-        // Add NPC
-        for (int n=0;n<PercentageNPC;n++)
+        // Free box
+        List<Vector2> tileFree = new List<Vector2>();
+        for (int k = 0 ; k < tileMap.NumTilesWide; k++)
         {
-            int x = Random.Range(1, tileWidth - 1);
-            int y = Random.Range(1, tileHeight - 1);
-
-            //mySprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
-            GameObject obj = new GameObject("npc");
-            sr = obj.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+            for (int s = 0; s < tileMap.NumTilesHigh; s++)
+            {
+                if (tileCollision.Contains(new Vector2(k,s)) == false)
+                {
+                    tileFree.Add(new Vector2(k, s));
+                }
+            }
         }
 
-        sr.sprite = mySprite;
+        GameObject npcGroup = new GameObject();
 
+        // Add NPC
+        
+        for (int n = 0; n < HowManyNPC; n++)
+        {
+            var randomIndex = Random.Range(0, tileFree.Count);
 
+            otherAnimator.gameObject.AddComponent(typeof(TmxObject));;
+            ((TmxObject)otherAnimator.gameObject.GetComponent(typeof(TmxObject))).TmxPosition = tileFree[randomIndex];
+            ((TmxObject)otherAnimator.gameObject.GetComponent(typeof(TmxObject))).TmxSize = new Vector2(32, 64);
+            ((TmxObject)otherAnimator.gameObject.GetComponent(typeof(TmxObject))).TmxId = 1000 + n;
+            ((SpriteRenderer)otherAnimator.GetComponent(typeof(SpriteRenderer))).sortingOrder = 2;
+            otherAnimator.gameObject.name = "npc";
+            otherAnimator.gameObject.SetActive(true);
+            otherAnimator.transform.position = new Vector3(tileFree[randomIndex].x * 32, -tileFree[randomIndex].y * 32, 0);
+
+            Instantiate(otherAnimator, npcGroup.transform);
+
+            tileFree.Remove(tileFree[randomIndex]);
+        }
+
+        npcGroup.transform.parent = tileMap.transform;
+        //Instantiate(npcGroup, tileMap.transform);
     }
 
     // Update is called once per frame
@@ -72,3 +81,42 @@ public class Create_NPC : MonoBehaviour
 		
 	}
 }
+
+//public class AdvRectangleObject : RectangleObject
+//{
+//    private float _topTile;
+//    public float TopTile
+//    {
+//        get { return _topTile; }
+//    }
+
+//    private float _bottomTile;
+//    public float BottoTile
+//    {
+//        get { return _bottomTile; }
+//    }
+
+//    private RectangleObject[] _rectangleObject;
+//    public RectangleObject[] RectangleObject
+//    {
+//        get { return _rectangleObject; }
+//        set { _rectangleObject = value; }
+//    }
+
+//    public AdvRectangleObject()
+//    { }
+
+//    public AdvRectangleObject(RectangleObject[] rts)
+//    {
+//        int i = 0;
+//        foreach (RectangleObject rt in rts)
+//        {
+//            _rectangleObject[i] = rt;
+
+//            _topTile = rt.TmxPosition.x;
+//            _bottomTile = rt.TmxSize.y;
+//            i++;
+//        }
+//    }
+
+//}
