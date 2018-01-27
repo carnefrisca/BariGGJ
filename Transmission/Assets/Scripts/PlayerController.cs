@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour {
 	public bool faceRight;
 	public bool faceRear;
 	public bool faceLeft;
+	public GameObject bombBlastPS;
 
 
 
@@ -35,6 +36,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start()
 	{
+
 		anim = GetComponent<Animator> ();
 		rb2d = GetComponent<Rigidbody2D> ();
 	}
@@ -52,6 +54,8 @@ public class PlayerController : MonoBehaviour {
 			StartCoroutine ("RevertTransmission");
 			Debug.Log ("DropBomb");
 			anim.SetBool ("holdingBomb", false);
+			bombBlastPS.SetActive (true);
+			Instantiate (bombBlastPS,transform.position, transform.rotation);
 		}
 
 			
@@ -154,7 +158,6 @@ public class PlayerController : MonoBehaviour {
 	public IEnumerator ChangeStatus()
 
 	{
-		
 		yield return new WaitForSeconds(transmissionTime);       
 		Debug.Log("Start Virus Transmission");  
 		m_SpriteRenderer = GetComponent<SpriteRenderer>();
