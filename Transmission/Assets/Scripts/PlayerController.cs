@@ -29,7 +29,8 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip blastBomb;
 	public AudioClip pickBomb;
 	public AudioClip startInfection;
-
+	public Canvas myCanvas;
+	public GameObject gameOverScreen;
 
 
 
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour {
 		{
 			myAudio.PlayOneShot (pickBomb);
 			DestroyBombOnStage ();
+
 			//playanimation
 		}
 		if ((Input.GetButtonDown ("DropBomb")) & (holdingBomb)) 
@@ -63,6 +65,7 @@ public class PlayerController : MonoBehaviour {
 			bombBlastPS.SetActive (true);
 			Instantiate (bombBlastPS,transform.position, transform.rotation);
 		}
+
 
 			
 	}
@@ -184,6 +187,14 @@ public class PlayerController : MonoBehaviour {
 		infected = false;
 		holdingBomb = false;
 	}
+
+	public void GameOver()
+	{
+		myCanvas.GetComponent<CanvasGroup> ().alpha = 1;
+		gameOverScreen.SetActive (true);
+		
+	}
+
 
 
 

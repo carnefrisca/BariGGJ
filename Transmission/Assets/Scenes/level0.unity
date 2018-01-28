@@ -406,6 +406,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!223 &723200444 stripped
+Canvas:
+  m_PrefabParentObject: {fileID: 223468805764905474, guid: 3fc9c0c4286d74341a5e51541b8851f8,
+    type: 2}
+  m_PrefabInternal: {fileID: 1529398868}
 --- !u!1 &964796197 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1067226673071834, guid: 7c9d4c489dd300e4aab7106624b4e3ef,
@@ -491,6 +496,11 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!1 &1020757989 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1198982304305232, guid: 3fc9c0c4286d74341a5e51541b8851f8,
+    type: 2}
+  m_PrefabInternal: {fileID: 1529398868}
 --- !u!1001 &1160311192
 Prefab:
   m_ObjectHideFlags: 0
@@ -565,6 +575,16 @@ Prefab:
       propertyPath: startInfection
       value: 
       objectReference: {fileID: 8300000, guid: 1b26878abdfed5747a574170141d8403, type: 3}
+    - target: {fileID: 114813723840559586, guid: 7c9d4c489dd300e4aab7106624b4e3ef,
+        type: 2}
+      propertyPath: myCanvas
+      value: 
+      objectReference: {fileID: 723200444}
+    - target: {fileID: 114813723840559586, guid: 7c9d4c489dd300e4aab7106624b4e3ef,
+        type: 2}
+      propertyPath: gameOverScreen
+      value: 
+      objectReference: {fileID: 1020757989}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7c9d4c489dd300e4aab7106624b4e3ef, type: 2}
   m_IsPrefabParent: 0
@@ -720,6 +740,15 @@ Prefab:
     - target: {fileID: 114731369528450752, guid: 3fc9c0c4286d74341a5e51541b8851f8,
         type: 2}
       propertyPath: isPaused
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1198982304305232, guid: 3fc9c0c4286d74341a5e51541b8851f8, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 225683364773191104, guid: 3fc9c0c4286d74341a5e51541b8851f8,
+        type: 2}
+      propertyPath: m_Alpha
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
