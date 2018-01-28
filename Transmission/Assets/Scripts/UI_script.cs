@@ -16,11 +16,13 @@ public class UI_script : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Input.GetButtonDown ("Start")) {
+		if (Input.GetButtonDown ("Start")) 
+		{
 			GameStart ();
 			Debug.Log ("Start");
 		}
-		if (Input.GetButtonDown ("Esc")) {
+		if (Input.GetButtonDown ("escape")) 
+		{
 			QuitApplication ();
 			Debug.Log ("Esci");
 		}

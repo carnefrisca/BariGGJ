@@ -4,11 +4,16 @@ using UnityEngine;
 using Tiled2Unity;
 using System.Linq;
 using System.Reflection;
+using System;
+using UnityEditor;
 
 public class CreateNPC : MonoBehaviour
 {
     public int HowManyNPC = 1;
-    public Animator otherAnimator;
+    //public Animator otherAnimator;
+    public GameObject otherAnimator;
+    public bool bornInfected;
+    public int howManyInfected;
 
     // Use this for initialization
     void Start()
@@ -48,22 +53,28 @@ public class CreateNPC : MonoBehaviour
         }
 
         GameObject npcGroup = new GameObject();
+        npcGroup.transform.name = "NPCGroup";
 
         // Add NPC        
         for (int n = 0; n < HowManyNPC; n++)
         {
-            var randomIndex = Random.Range(0, tileFree.Count);
-
-            otherAnimator.gameObject.AddComponent(typeof(TmxObject));;
+            var randomIndex = UnityEngine.Random.Range(0, tileFree.Count);
+            
+            //otherAnimator.gameObject.AddComponent(typeof(TmxObject));
             ((TmxObject)otherAnimator.gameObject.GetComponent(typeof(TmxObject))).TmxPosition = tileFree[randomIndex];
             ((TmxObject)otherAnimator.gameObject.GetComponent(typeof(TmxObject))).TmxSize = new Vector2(32, 64);
             ((TmxObject)otherAnimator.gameObject.GetComponent(typeof(TmxObject))).TmxId = 1000 + n;
+
             ((SpriteRenderer)otherAnimator.GetComponent(typeof(SpriteRenderer))).sortingOrder = 2;
             otherAnimator.gameObject.name = "npc";
             otherAnimator.gameObject.SetActive(true);
             otherAnimator.transform.position = new Vector3(tileFree[randomIndex].x * 32, -tileFree[randomIndex].y * 32, 0);
-
             Instantiate(otherAnimator, npcGroup.transform);
+
+            if (n < howManyInfected)
+                otherAnimator.gameObject.GetComponent<NPCManager>().infected = true;
+            else
+                otherAnimator.gameObject.GetComponent<NPCManager>().infected = false;
 
             tileFree.Remove(tileFree[randomIndex]);
         }

@@ -8,18 +8,6 @@ AnimatorController:
   m_Name: N_npc_animator
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: hDirection
-    m_Type: 1
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: vDirection
-    m_Type: 1
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
   - m_Name: faceLeft
     m_Type: 4
     m_DefaultFloat: 0
@@ -44,6 +32,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
+  - m_Name: direction
+    m_Type: 3
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -64,8 +58,11 @@ AnimatorStateTransition:
   m_PrefabInternal: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 4
-    m_ConditionEvent: vDirection
+  - m_ConditionMode: 6
+    m_ConditionEvent: direction
+    m_EventTreshold: 5
+  - m_ConditionMode: 1
+    m_ConditionEvent: faceFront
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102298255390562998}
@@ -115,9 +112,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: faceLeft
     m_EventTreshold: 0
-  - m_ConditionMode: 4
-    m_ConditionEvent: hDirection
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: direction
+    m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102281775853625588}
   m_Solo: 0
@@ -142,9 +139,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: faceRight
     m_EventTreshold: 0
-  - m_ConditionMode: 3
-    m_ConditionEvent: hDirection
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: direction
+    m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102086722367955390}
   m_Solo: 0
@@ -217,9 +214,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: faceRear
     m_EventTreshold: 0
-  - m_ConditionMode: 3
-    m_ConditionEvent: vDirection
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: direction
+    m_EventTreshold: 4
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102251744830757916}
   m_Solo: 0

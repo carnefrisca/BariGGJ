@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 
@@ -9,40 +10,78 @@ public class NPCManager : MonoBehaviour
     Texture2D mColorSwapTex;
     Color[] mSpriteColors;
 
-    private int _healtLevel = 100;
-
     MovementState movement;
 
     private Vector3 endpoint;
     private Vector3 vDirection;
     public float speed;
 
-
-    private float timer = 0.0f;
+    private float timer;
     public float waitingTime = 2.0f;
     public float Range;
 
-    public int HealtLevel
+    private float healtTimer;
+    public float healtTiming = 0.1f;
+
+    private Animator anim;
+
+    public int HealtLevel = 100;
+
+    public bool infected = false;
+
+    public bool faceFront;
+    public bool faceRight;
+    public bool faceRear;
+    public bool faceLeft;
+
+    void Start()
     {
-        get { return _healtLevel; }
-        set { _healtLevel = value; }
+        anim = GetComponent<Animator>();
+        InitColorSwapTex();
+        timer = 0f;
+        healtTimer = 0f;
+        Reset();
     }
-	
-	void Update ()
+
+    void Update ()
     {
-        print(movement + " " + vDirection);
-        print("Current dir " + transform.TransformDirection(vDirection) * speed * Time.deltaTime);
+        if (infected)
+        {
+            if (HealtLevel == 100)
+                gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+            if (Enumerable.Range(99, 85).Contains(HealtLevel))
+                gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+            if (Enumerable.Range(84, 65).Contains(HealtLevel))
+                gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+            if (Enumerable.Range(64, 45).Contains(HealtLevel))
+                gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            if (Enumerable.Range(44, 1).Contains(HealtLevel))
+                gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
+            if (HealtLevel <= 0)
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.magenta;
+                HealtLevel = 0;
+            }
+
+            healtTimer += 0.1f;
+            if (healtTimer > healtTiming)
+            {
+                healtTimer = 0f;
+                HealtLevel -= 1;
+            }
+        }
+        else
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        }
 
         gameObject.transform.position += transform.TransformDirection(vDirection) * speed * Time.deltaTime;
 
-        print("vector Vs vector " + Vector3.Distance(gameObject.transform.position, endpoint));
-        if ((gameObject.transform.position - endpoint).magnitude < Range)
+        if (Vector3.Distance(gameObject.transform.position,endpoint) < Range)//((gameObject.transform.position - endpoint).magnitude < Range)
         {
-            print("IN TIMER " + timer);
             timer += Time.deltaTime;
             if (timer > waitingTime)
             {
-                print("RESET TIMER");
                 timer = 0f;
                 Reset();
             }
@@ -51,50 +90,78 @@ public class NPCManager : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.tag== "Enemy")
+        { infected = true;
+        }
+        timer = 0f;
         Reset();
     }
 
     void Reset()
     {
-        print("RESET");
-        endpoint = gameObject.transform.position; //new Vector3(Random.Range(gameObject.transform.position.x, gameObject.transform.position.x + Range), 1, 0);
-        gameObject.transform.LookAt(endpoint);
-        RandomPosition();
         RandomDirection();
-        print("RESET " + endpoint + " " + vDirection);
+
+        RandomPosition();
+        endpoint = gameObject.transform.position;
+        //gameObject.transform.LookAt(endpoint);
     }
 
     void RandomPosition()
     {
-        float x = Random.Range(42f, 1045f);
-        float y = Random.Range(-672f, 64f);
+        float x = Random.Range(0.0f, 1088f);
+        float y = Random.Range(0.0f, 736f);
         endpoint = new Vector2(x, y);
     }
 
     void RandomDirection()
     {
-        int direction = Random.Range(0,5);
-        movement = (MovementState)direction;
+        int normale = Random.Range(0,5);
+        movement = (MovementState)normale;
+        anim.SetInteger("direction", normale);
 
         switch (movement)
         {
             case MovementState.idleFront:
+                anim.SetBool("faceLeft", false);
+                anim.SetBool("faceRight", false);
+                anim.SetBool("faceRear", false);
+                anim.SetBool("faceFront", true);
                 vDirection = Vector3.zero;
                 break;
             case MovementState.idleBack:
+                anim.SetBool("faceLeft", false);
+                anim.SetBool("faceRight", false);
+                anim.SetBool("faceRear", true);
+                anim.SetBool("faceFront", false);
                 vDirection = Vector3.zero;
                 break;
             case MovementState.walkLeft:
                 vDirection = Vector3.left;
+                anim.SetBool("faceFront", false);
+                anim.SetBool("faceRear", false);
+                anim.SetBool("faceRight", false);
+                anim.SetBool("faceLeft", true);
                 break;
             case MovementState.walkRight:
                 vDirection = Vector3.right;
+                anim.SetBool("faceLeft", false);
+                anim.SetBool("faceFront", false);
+                anim.SetBool("faceRear", false);
+                anim.SetBool("faceRight", true);
                 break;
             case MovementState.walkTop:
                 vDirection = Vector3.up;
+                anim.SetBool("faceLeft", false);
+                anim.SetBool("faceRight", false);
+                anim.SetBool("faceFront", false);
+                anim.SetBool("faceRear", true);
                 break;
             case MovementState.walkBottom:
                 vDirection = Vector3.down;
+                anim.SetBool("faceLeft", false);
+                anim.SetBool("faceRight", false);
+                anim.SetBool("faceRear", false);
+                anim.SetBool("faceFront", true);
                 break;
         }
     }

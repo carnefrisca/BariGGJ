@@ -1,5 +1,6 @@
 ﻿Shader "Sprites/ChangeColor"
 {
+
 	Properties
 	{
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
@@ -55,7 +56,7 @@
 
 			sampler2D _SwapTex;
 
-			fixed4 SampleSpriteTx(float2 uv)
+			fixed4 SampleSpriteTexture(float2 uv)
 			{
 				fixed4 color = tex2D(_MainTex, uv);
 				if (_AlphaSplitEnabled)
@@ -64,11 +65,11 @@
 				return color;
 			}
 
-			fixed4 frag(v2f i) : SV_Target
+			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 c = SampleSpriteTx(i.uv);
+				fixed4 c = SampleSpriteTexture(IN.uv);
 				fixed4 swapCol = tex2D(_SwapTex, float2(c.r, 0));
-				fixed4 final = lerp(c, swapCol, swapCol.a) * i.color;
+				fixed4 final = lerp(c, swapCol, swapCol.a) * IN.color;
 				final.a = c.a;
 				final.rgb *= c.a;
 				return final;

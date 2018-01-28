@@ -151,6 +151,10 @@ MonoBehaviour:
   faceRight: 0
   faceRear: 0
   faceLeft: 0
+  bombBlastPS: {fileID: 0}
+  blastBomb: {fileID: 0}
+  pickBomb: {fileID: 0}
+  startInfection: {fileID: 0}
 --- !u!212 &212534285738834420
 SpriteRenderer:
   m_ObjectHideFlags: 1
